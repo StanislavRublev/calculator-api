@@ -28,7 +28,15 @@ jobs:
         run: python -c "from main import app; print('API Calculator loaded successfully')"
 
       - name: Build Docker image
-        run: docker build -t calculator-api:${{ github.run_number }} .
+        run: docker build --build-arg APP_VERSION=1.0.${{ github.run_number }} -t calculator-api:1.0.${{ github.run_number }} .
+ 
+      - name: Run Docker container
+        run: docker run -d --name calculator-test -p 8000:8000 calculator-api:1.0.${{ github.run_number }}
 
+      - name: Check API version
+        run: |
+          sleep 5
+          curl http://127.0.0.1:8000/version
+     
       - name: Show Docker image
         run: docker images calculator-api

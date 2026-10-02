@@ -1,6 +1,12 @@
+import os
 from fastapi import FastAPI, HTTPException
 
-app = FastAPI(title="API Calculator")
+APP_VERSION = os.getenv("APP_VERSION", "local")
+
+app = FastAPI(
+    title="API Calculator",
+    version=APP_VERSION
+)
 
 
 @app.get("/")
@@ -38,3 +44,8 @@ def mod(a: float, b: float):
     if b == 0:
         raise HTTPException(status_code=400, detail="Division by zero is not allowed")
     return {"result": a % b}
+
+
+@app.get("/version")
+def version():
+    return {"version": APP_VERSION}
