@@ -33,3 +33,8 @@ def divide(a: float, b: float):
 @app.get("/power")
 def power(a: float, b: float):
     return {"result": a ** b}
+@app.get("/mod")
+def mod(a: float, b: float):
+    if b == 0:
+        raise HTTPException(status_code=400, detail="Division by zero is not allowed")
+    return {"result": a % b}
